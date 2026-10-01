@@ -1,6 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'tailwindcss';
 
+@utility bg-login {
+  /* Celular (Padrão - Mobile First): Imagem de fundo */
+  background-image: url('/loginBackground.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Telas médias ou maiores (Desktop / md): Fundo Branco */
+  @media (width >= 768px) {
+    background-image: none;
+    background-color: var(--color-white); /* Usa a cor padrão do Tailwind v4 */
+  }
+}
+
 @theme {
     --color-text-primary: #1F5C4E;
     --color-bg-button-primary: #2E7D6B;
