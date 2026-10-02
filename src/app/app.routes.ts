@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
 import { Login } from './login/login';
-import { Welcome } from './welcome/welcome';
-import { Professional } from './professional/professional';
-import { User } from './user/user';
+// import { Welcome } from './welcome/welcome';
+import { ProfessionalPage } from './professional/professional';
+import { UserPage } from './user/user';
 
 export const routes: Routes = [
-  { path: '', component: Welcome },
+  // Redireciona a rota vazia para a tela de login. O 'full' diz para o Angular considerar a rota vazia como correspondência apenas quando a URL inteira estiver vazia. 
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'professional', component: Professional },
-  { path: 'user', component: User },
+  // O ':id' indica que é um valor que pode variar. Cada usuário (profissional ou usuário) tem o próprio 'id'. Torna as rotas dinâmicas
+  { path: 'professional/:id', component: ProfessionalPage },
+  { path: 'user/:id', component: UserPage },
 ];

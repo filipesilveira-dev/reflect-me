@@ -1,1 +1,5 @@
-<p>professional works!</p>
+@if (user) {
+  <h1>Hello, {{ user.username }}!</h1>
+} @else {
+  <h1>Usuário não encontrado</h1>
+}

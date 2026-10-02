@@ -1,1 +1,6 @@
-<p>user works!</p>
+<!-- Estrutura de renderização condicional caso exista ou não usuário -->
+@if (user) {
+  <h1>Hello, {{ user.username }}!</h1>
+} @else {
+    <h1>Usuário não encontrado</h1>
+}
