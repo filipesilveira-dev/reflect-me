@@ -1,6 +1,21 @@
 <!-- Estrutura de renderização condicional caso exista ou não usuário -->
 @if (user) {
   <h1>Hello, {{ user.username }}!</h1>
+  <!-- Estrutura semelhante ao reflections.map() no React. O 'track' funcionaria com o "key" identificando cada item pelo seu id -->
+  @for (reflection of reflections; track reflection.id) {
+    <form (submit)="onSubmit($event, reflection.id)">
+      <p>{{ reflection.text }}</p>
+      @if (reflection.response) {
+        <p>{{ reflection.response }}</p>
+        <textarea name="response" placeholder="Digite sua resposta aqui"></textarea>
+        <button>Responder</button>
+      } @else {
+        <p>Essa reflexão ainda não foi respondida</p>
+        <textarea name="response" placeholder="Digite sua resposta aqui"></textarea>
+        <button>Responder</button>
+      }
+    </form>
+  }
 } @else {
-    <h1>Usuário não encontrado</h1>
+  <h1>Usuário não encontrado</h1>
 }

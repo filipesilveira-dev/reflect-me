@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 // Arquivo com as variáveis
-import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 // Possibilita o uso de rotas
 import { Router } from '@angular/router';
 // Arquivo com os dados dos usuários
