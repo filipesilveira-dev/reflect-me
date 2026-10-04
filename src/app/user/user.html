@@ -5,14 +5,30 @@
   @for (reflection of reflections; track reflection.id) {
     <form (submit)="onSubmit($event, reflection.id)">
       <p>{{ reflection.text }}</p>
+
+      <!-- Caso haja uma resposta, rendeizar seu texto e os botões de editar e excluir -->
       @if (reflection.response) {
-        <p>{{ reflection.response }}</p>
-        <textarea name="response" placeholder="Digite sua resposta aqui"></textarea>
-        <button>Responder</button>
+        <!-- Caso essa resposta existente esteja sendo editada, renderizar o textarea e os botões dde salvar e cancelar -->
+        @if (editingReflectionId === reflection.id) {
+          <form (submit)="onUpdate($event, reflection.id)">
+            <textarea name="editedResponse" [value]="reflection.response"></textarea>
+            <!-- A atualização ocorre com o envio do formulário -->
+            <button type="submit">
+              Salvar alteração
+            </button>
+            <button type="button" (click)="onCancelEdit()">Cancelar</button>
+          </form>
+        } @else {
+          <p>{{ reflection.response }}</p>
+          <button type="button" (click)="onEdit(reflection.id)">Editar</button>
+
+          <button type="button" (click)="onDelete(reflection.id)">Excluir</button>
+        }
+        <!-- Caso a reflexão não tenha sido respondida -->
       } @else {
         <p>Essa reflexão ainda não foi respondida</p>
         <textarea name="response" placeholder="Digite sua resposta aqui"></textarea>
-        <button>Responder</button>
+        <button type="submit">Responder</button>
       }
     </form>
   }

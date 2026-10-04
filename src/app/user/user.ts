@@ -21,6 +21,8 @@ export class UserPage {
   // Propriedade de 'UserPage' que pode conter um usuário ou 'undefined', caso não seja achado o usuário na lista
   user: User | undefined;
   reflections: Reflection[] | undefined;
+  // Para identificar qual reflexãa está sendo editada
+  editingReflectionId: string | null = null;
 
   // Possibilita  identificar parâmetros da rota (semelhante ao que é feito em React com useParams(). Isso permitirá, com base no id passado na rota, identificar qual usuário está acessando a aplicação)
   constructor(
@@ -49,11 +51,46 @@ export class UserPage {
     // Persiste a nova resposta no localStorage
     this.reflectionService.addResponse(reflectionId, response.value);
 
-     response.value = '';
+    response.value = '';
 
     const reflections = this.reflectionService.getReflections();
 
     // Atualiza a interface atualizando o 'this.reflections' com o novo dado inserido no usuário
     this.reflections = reflections.filter((reflection) => reflection.userId === this.user?.id);
   }
+
+  onDelete(reflectionId: string) {
+    this.reflectionService.deleteResponse(reflectionId);
+
+    const reflections = this.reflectionService.getReflections();
+
+    this.reflections = reflections.filter((reflection) => reflection.userId === this.user?.id);
+  }
+
+  // Atribui à reflexão o status de "estar em edição"
+  onEdit(reflectionId: string) {
+    this.editingReflectionId = reflectionId;
+  }
+
+  // Método semelhante ao "onSubmit", mas ocorre quando o usuário atualiza a resposta de uma reflexão em específico
+  onUpdate(event: Event, reflectionId: string) {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const response = form.elements.namedItem('editedResponse') as HTMLTextAreaElement;
+
+    this.reflectionService.updateResponse(reflectionId, response.value);
+
+    const reflections = this.reflectionService.getReflections();
+
+    this.reflections = reflections.filter((reflection) => reflection.userId === this.user?.id);
+
+    // Retorna a reflexão ao status de não estar em edição 
+    this.editingReflectionId = null;
+  }
+
+  // Método para o botão de cancelar no modo de edição
+  onCancelEdit() {
+  this.editingReflectionId = null;
+}
 }
