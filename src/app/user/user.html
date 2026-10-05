@@ -1,36 +1,124 @@
 <!-- Estrutura de renderização condicional caso exista ou não usuário -->
 @if (user) {
-  <h1>Hello, {{ user.username }}!</h1>
+  <header class="flex justify-between items-center px-2 py-1">
+    <div class="flex items-center bg-bg-primary pr-2 rounded-md border border-bg-button-primary">
+      <img src="/reflectMeLogo.png" alt="Logo Reflect Me" class="h-10 w-10 p-1" />
+      <span class="font-semibold">Reflect Me</span>
+    </div>
+
+    <span
+      class="bg-bg-reflection mx-1 p-2 py-1 border border-bg-button-primary rounded-full text-xs"
+      >U</span
+    >
+  </header>
+
+  <div class="flex flex-col bg-bg-primary px-3 py-1">
+    <!-- <h1 class="text-2xl font-semibold">Olá, {{ user.username }}</h1> -->
+    <p class="text-lg font-semibold">Sua reflexão do dia</p>
+    <span class="text-xs font-medium text-text-primary">Data de hoje</span>
+  </div>
+
   <!-- Estrutura semelhante ao reflections.map() no React. O 'track' funcionaria com o "key" identificando cada item pelo seu id -->
+  <!-- <h2>Reflexões pendentes</h2> -->
+
   @for (reflection of reflections; track reflection.id) {
-    <form (submit)="onSubmit($event, reflection.id)">
-      <p>{{ reflection.text }}</p>
+    @if (!reflection.response) {
+      <form (submit)="onSubmit($event, reflection.id)" class="bg-bg-primary px-1 py-1">
+        <div
+          class="grid grid-cols-4 h-40 m-2 bg-bg-reflection pr-3 rounded-xl shadow-xs shadow-bg-button-hover"
+        >
+          <img src="/quote.svg" alt="Imagem de aspas duplas" class="h-15 w-15 p-1 rotate-180" />
+          <div class="flex justify-center items-center col-span-3 mx-auto">
+            <p class="text-lg font-medium mr-6">{{ reflection.text }}</p>
+          </div>
+        </div>
 
-      <!-- Caso haja uma resposta, rendeizar seu texto e os botões de editar e excluir -->
+        <!-- <p>Essa reflexão ainda não foi respondida</p> -->
+
+        <div class="flex flex-col m-2 gap-2">
+          <textarea
+            name="response"
+            placeholder="Digite sua resposta aqui"
+            rows="5"
+            class="bg-white rounded-xl p-2 border border-bg-button-hover"
+          ></textarea>
+          <button
+            type="submit"
+            class="flex p-2 justify-center items-center gap-1 bg-bg-button-primary rounded-xl hover:cursor-pointer hover:bg-bg-button-hover"
+          >
+            <img src="/save.svg" alt="Imagem de disquete" class="hover:cursor-pointer" />
+            <span class="text-white hover:cursor-pointer">Salvar resposta</span>
+          </button>
+        </div>
+      </form>
+    }
+  }
+
+  <h2 class="text-lg font-semibold px-3 py-2 bg-bg-primary">Histórico</h2>
+
+  <!-- Reflexões respondidas -->
+  @if (reflections.some((reflection) => reflection.response)) {
+    @for (reflection of reflections; track reflection.id) {
       @if (reflection.response) {
-        <!-- Caso essa resposta existente esteja sendo editada, renderizar o textarea e os botões dde salvar e cancelar -->
-        @if (editingReflectionId === reflection.id) {
-          <form (submit)="onUpdate($event, reflection.id)">
-            <textarea name="editedResponse" [value]="reflection.response"></textarea>
-            <!-- A atualização ocorre com o envio do formulário -->
-            <button type="submit">
-              Salvar alteração
-            </button>
-            <button type="button" (click)="onCancelEdit()">Cancelar</button>
-          </form>
-        } @else {
-          <p>{{ reflection.response }}</p>
-          <button type="button" (click)="onEdit(reflection.id)">Editar</button>
+        <div class="bg-bg-primary px-3 pb-3">
+          <form
+            (submit)="
+              editingReflectionId === reflection.id
+                ? onUpdate($event, reflection.id)
+                : onSubmit($event, reflection.id)
+            "
+            class="grid grid-cols-5 justify-between items-center bg-white p-2 border border-bg-button-hover rounded-lg"
+          >
 
-          <button type="button" (click)="onDelete(reflection.id)">Excluir</button>
-        }
-        <!-- Caso a reflexão não tenha sido respondida -->
-      } @else {
-        <p>Essa reflexão ainda não foi respondida</p>
-        <textarea name="response" placeholder="Digite sua resposta aqui"></textarea>
-        <button type="submit">Responder</button>
+          <!-- Essa parte é renderizada apenas se estiver sendo editada. Porém a estilização permanece. É preciso alterar a estrutura para que fiquem duas independentes uma da outra, ou seja, renderizar outro "respnse.text" se for o caso -->
+
+            <!-- Reflexão -->
+            <p class="col-span-3 text-xs font-semibold">{{ reflection.text }}</p>
+
+            @if (editingReflectionId === reflection.id) {
+              <textarea name="editedResponse" [value]="reflection.response"></textarea>
+              <button type="submit" class="hover:cursor-pointer">Salvar alteração</button>
+              <button type="button" class="hover:cursor-pointer" (click)="onCancelEdit()">
+                Cancelar
+              </button>
+            } @else {
+              <!-- <p>{{ reflection.response }}</p> -->
+              <div class="flex col-start-5 col-span-1 justify-self-end gap-3">
+                <button
+                  type="button"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-bg-button-primary hover:cursor-pointer hover:bg-bg-button-hover"
+                  (click)="onEdit(reflection.id)"
+                >
+                  <img src="/edit.svg" alt="Imagem de lápis" />
+                </button>
+
+                <button
+                  type="button"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-600 hover:cursor-pointer hover:bg-bg-delete-hover"
+                  (click)="onDelete(reflection.id)"
+                >
+                  <img src="/delete.svg" alt="" />
+                </button>
+              </div>
+            }
+          </form>
+        </div>
       }
-    </form>
+    }
+  } @else {
+    <!-- Caso nenhuma reflexão tenha sido respondida -->
+    <div class="p-3 bg-bg-primary">
+      <div
+        class="flex flex-col justify-center items-center gap-1 h-40 bg-white border border-bg-button-hover rounded-xl"
+      >
+        <img
+          src="/landscape.svg"
+          alt="Imagem de montanha"
+          class="h-15 w-15 bg-bg-landscape my rounded-full p-1"
+        />
+        <p class="text-md font-medium">Nenhuma reflexão foi respondida ainda.</p>
+      </div>
+    </div>
   }
 } @else {
   <h1>Usuário não encontrado</h1>

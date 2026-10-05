@@ -20,7 +20,7 @@ import { ReflectionService } from '../services/reflection.service';
 export class UserPage {
   // Propriedade de 'UserPage' que pode conter um usuário ou 'undefined', caso não seja achado o usuário na lista
   user: User | undefined;
-  reflections: Reflection[] | undefined;
+  reflections: Reflection[] = [];
   // Para identificar qual reflexãa está sendo editada
   editingReflectionId: string | null = null;
 
