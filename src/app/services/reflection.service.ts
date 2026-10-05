@@ -37,7 +37,7 @@ export class ReflectionService {
     const reflection = reflections.find((reflection) => reflection.id === reflectionId);
 
     if (reflection) {
-      reflection.response = response;
+      reflection.response = response.charAt(0).toUpperCase() + response.slice(1);
     }
 
     localStorage.setItem(this.storageKey, JSON.stringify(reflections));
@@ -49,7 +49,7 @@ export class ReflectionService {
     const reflection = reflections.find((reflection) => reflection.id === reflectionId);
 
     if (reflection) {
-      reflection.response = response;
+      reflection.response = response.charAt(0).toUpperCase() + response.slice(1);
     }
 
     localStorage.setItem(this.storageKey, JSON.stringify(reflections));
