@@ -2,7 +2,7 @@
 
   <div class="h-screen bg-bg-primary">
     <!-- Cabeçalho -->
-    <header class="flex items-center justify-between px-2 py-1 bg-white">
+    <header class="flex items-center justify-between w-full px-2 py-1 bg-white border-b border-border-bottom">
       <div class="flex items-center rounded-md">
         <img src="/reflectMeLogoTrans.png" alt="Logo Reflect Me" class="h-10 w-10 p-1" />
 
@@ -17,49 +17,53 @@
     </header>
 
     <!-- Introdução -->
-    <div class="flex flex-col bg-bg-primary px-3 py-2">
+    <div class="flex flex-col bg-bg-primary px-3 py-2 mx-auto max-w-100">
       <p class="text-lg font-semibold">Sua reflexão do dia</p>
       <span class="text-xs font-medium text-text-primary"> Data de hoje </span>
     </div>
+
     <!-- Reflexões pendentes -->
-    @for (reflection of reflections; track reflection.id) {
-      @if (!reflection.response) {
-        <form (submit)="onSubmit($event, reflection.id)" class="bg-bg-primary px-1 py-1">
-          <!-- Reflexão -->
-          <div
-            class="m-2 grid min-h-40 grid-cols-4 items-center rounded-xl bg-bg-reflection pr-3 shadow-xs shadow-bg-button-hover"
-          >
-            <img src="/quote.svg" alt="Imagem de aspas duplas" class="h-15 w-15 rotate-180 p-1" />
-            <div class="col-span-3 mx-auto flex items-center justify-center">
-              <p class="mr-6 text-lg font-medium">
-                {{ reflection.text }}
-              </p>
-            </div>
-          </div>
-          <!-- Resposta -->
-          <div class="m-2 flex flex-col gap-2">
-            <textarea
-              name="response"
-              placeholder="Digite sua resposta aqui"
-              rows="5"
-              class="rounded-xl border border-bg-button-hover bg-white p-2 outline-none focus:border-bg-button-primary"
-            ></textarea>
-            <button
-              type="submit"
-              class="flex items-center justify-center gap-1 rounded-xl bg-bg-button-primary p-2 hover:cursor-pointer hover:bg-bg-button-hover"
+    <div class="md:flex md:items-center md:mx-1">
+      @for (reflection of reflections; track reflection.id) {
+        @if (!reflection.response) {
+          <form (submit)="onSubmit($event, reflection.id)" class="bg-bg-primary px-1 py-1 mx-auto max-w-100">
+            <!-- Reflexão -->
+            <div
+              class="m-2 grid min-h-30 py-2 grid-cols-4 rounded-xl bg-bg-reflection pr-3 shadow-xs shadow-bg-button-hover"
             >
-              <img src="/save.svg" alt="Imagem de disquete" />
-              <span class="text-white"> Salvar resposta </span>
-            </button>
-          </div>
-        </form>
+              <img src="/quote.png" alt="Imagem de aspas duplas" class="h-15 w-15 p-1" />
+              <div class="col-span-3 mx-auto flex items-center justify-center">
+                <p class="mr-6 text-lg font-medium">
+                  {{ reflection.text }}
+                </p>
+              </div>
+            </div>
+            <!-- Resposta -->
+            <div class="m-2 flex flex-col gap-2">
+              <textarea
+                name="response"
+                placeholder="Digite sua resposta aqui"
+                rows="5"
+                class="rounded-xl border border-bg-button-hover bg-white p-2 outline-none focus:border-bg-button-primary"
+              ></textarea>
+              <button
+                type="submit"
+                class="flex items-center justify-center gap-1 rounded-xl bg-bg-button-primary p-2 hover:cursor-pointer hover:bg-bg-button-hover"
+              >
+                <img src="/save.svg" alt="Imagem de disquete" />
+                <span class="text-white"> Salvar resposta </span>
+              </button>
+            </div>
+          </form>
+        }
       }
-    }
+    </div>
+
     <!-- Nenhuma reflexão cadastrada -->
     @if (reflections.every((reflection) => reflection.response)) {
-      <div class="bg-bg-primary px-4 py-2">
+      <div class="bg-bg-primary py-2 mx-auto max-w-100">
         <div
-          class="flex flex-col justify-center items-center p-2 rounded-xl border border-bg-button-hover bg-white"
+          class="flex flex-col justify-center items-center p-2 rounded-xl border border-bg-button-hover bg-white "
         >
           <img
             src="/emptyReflections.jpg"
@@ -73,53 +77,58 @@
         </div>
       </div>
     }
+    
     <!-- Histórico -->
-    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold">Histórico</h2>
+    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold mx-auto max-w-100">Histórico</h2>
     <!-- Reflexões respondidas -->
     @if (reflections.some((reflection) => reflection.response)) {
       @for (reflection of reflections; track reflection.id) {
         @if (reflection.response) {
           @if (editingReflectionId === reflection.id) {
+
             <!-- Card em modo de edição -->
-            <div class="bg-bg-primary px-3 pb-3">
-              <form
-                (submit)="onUpdate($event, reflection.id)"
-                class="flex flex-col gap-2 rounded-lg border border-bg-button-hover bg-white p-3"
-              >
-                <!-- Reflexão -->
-                <p class="text-sm font-semibold">
-                  {{ reflection.text }}
-                </p>
-                <!-- Resposta em modo de edição -->
-                <textarea
-                  name="editedResponse"
-                  [value]="reflection.response"
-                  rows="4"
-                  class="rounded-xl border border-bg-button-hover bg-bg-primary p-2 outline-none focus:border-bg-button-primary"
-                ></textarea>
-                <!-- Ações -->
-                <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
-                  <button
-                    type="submit"
-                    class="rounded-xl bg-bg-button-primary px-4 py-2 text-white hover:cursor-pointer hover:bg-bg-button-hover"
-                  >
-                    Salvar alteração
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-xl bg-red-600 px-4 py-2 text-white hover:cursor-pointer hover:bg-bg-delete-hover"
-                    (click)="onCancelEdit()"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
+            <div class="bg-bg-primary mx-auto max-w-100">
+              <div class=" px-3 pb-3 ">
+                <form
+                  (submit)="onUpdate($event, reflection.id)"
+                  class="flex flex-col gap-2 rounded-lg border border-bg-button-hover bg-white p-3 "
+                >
+                  <!-- Reflexão -->
+                  <p class="text-sm font-semibold">
+                    {{ reflection.text }}
+                  </p>
+                  <!-- Resposta em modo de edição -->
+                  <textarea
+                    name="editedResponse"
+                    [value]="reflection.response"
+                    rows="4"
+                    class="rounded-xl border border-bg-button-hover bg-bg-primary p-2 outline-none focus:border-bg-button-primary"
+                  ></textarea>
+                  <!-- Ações -->
+                  <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                    <button
+                      type="submit"
+                      class="rounded-xl bg-bg-button-primary px-4 py-2 text-white hover:cursor-pointer hover:bg-bg-button-hover"
+                    >
+                      Salvar alteração
+                    </button>
+                    <button
+                      type="button"
+                      class="rounded-xl bg-red-600 px-4 py-2 text-white hover:cursor-pointer hover:bg-bg-delete-hover"
+                      (click)="onCancelEdit()"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           } @else {
+
             <!-- Card da reflexão respondida -->
-            <div class="bg-bg-primary px-3 pb-3">
+            <div class="bg-bg-primary px-3 pb-3 ">
               <div
-                class="grid grid-cols-5 items-center rounded-lg border border-bg-button-hover bg-white p-3"
+                class="grid grid-cols-5 items-center rounded-lg border border-bg-button-hover bg-white p-3 mx-auto max-w-100"
               >
                 <!-- Reflexão + resposta -->
                 <div class="col-span-3">
@@ -130,6 +139,7 @@
                     </span>
                   </p>
                 </div>
+
                 <!-- Ações -->
                 <div class="flex justify-evenly col-span-2">
                   <button
@@ -156,7 +166,7 @@
       }
     } @else {
       <!-- Caso nenhuma reflexão tenha sido respondida -->
-      <div class="bg-bg-primary p-3">
+      <div class="bg-bg-primary p-3 mx-auto max-w-100">
         <div
           class="flex h-40 flex-col items-center justify-center mx-auto p-4 gap-1 rounded-xl border border-bg-button-hover bg-white"
         >

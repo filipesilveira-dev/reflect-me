@@ -23,7 +23,13 @@
     --color-bg-input: #F7F9F8;
     --color-bg-reflection: #E8F1EC;
     --color-border: #A7C4B8;
+    --color-border-bottom: #a7c4b856;
     --color-bg-landscape: #d1c8ea4b;
     --color-bg-delete-hover: rgba(255, 0, 0, 0.521);
     --color-response-text: #7F7F7F;
+}
+
+html, body {
+
+    background-color: var(--color-bg-primary);
 }
