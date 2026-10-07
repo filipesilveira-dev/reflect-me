@@ -1,25 +1,20 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { DatePipe } from '@angular/common';
 // Arquivo importado para buscar o usuário pelo 'id' passado nos parâmetros da URL
 import { users } from '../data/users';
-
 // Interface que discrimina os dados esperados de um usuário
 import { User } from '../models/user';
-
 import { Reflection } from '../models/reflection';
-
 // Arquivo de dados. Sua importação se tornou obsoleta por conta da injeção de dependências.
 // import { reflections } from '../data/reflections';
-
 import { FormsModule } from '@angular/forms';
-
 // Arquivo que fornece informações por meio de Injeção de Dependências (DI)
 import { ReflectionService } from '../services/reflection.service';
 
 @Component({
   selector: 'app-user',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './user.html',
   styleUrl: './user.css',
 })
@@ -38,6 +33,8 @@ export class UserPage {
 
   // Armazena temporariamente a reflexão que o usuário deseja editar
   pendingEditReflectionId: string | null = null;
+
+  today= new Date();
 
   // Possibilita identificar parâmetros da rota (semelhante ao que é feito
   // em React com useParams()). Isso permitirá, com base no id passado

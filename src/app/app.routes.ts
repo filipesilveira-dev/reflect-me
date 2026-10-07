@@ -9,6 +9,6 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
   // O ':id' indica que é um valor que pode variar. Cada usuário (profissional ou usuário) tem o próprio 'id'. Torna as rotas dinâmicas
-  { path: 'professional/:id', component: ProfessionalPage },
+  { path: 'professional/:professionalId', component: ProfessionalPage },
   { path: 'user/:id', component: UserPage },
 ];

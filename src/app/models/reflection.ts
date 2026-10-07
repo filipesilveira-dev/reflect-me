@@ -4,4 +4,5 @@ export interface Reflection{
     userId: string;
     text: string;
     response: string;
+    createdAt: string;
 }

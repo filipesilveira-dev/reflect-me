@@ -1,8 +1,9 @@
 @if (user) {
-
   <div class="h-screen bg-bg-primary">
     <!-- Cabeçalho -->
-    <header class="flex items-center justify-between w-full px-2 py-1 bg-white border-b border-border-bottom">
+    <header
+      class="flex items-center justify-between w-full px-2 py-1 bg-white border-b border-border-bottom"
+    >
       <div class="flex items-center rounded-md">
         <img src="/reflectMeLogoTrans.png" alt="Logo Reflect Me" class="h-10 w-10 p-1" />
 
@@ -19,14 +20,19 @@
     <!-- Introdução -->
     <div class="flex flex-col bg-bg-primary px-3 py-2 mx-auto max-w-100">
       <p class="text-lg font-semibold">Sua reflexão do dia</p>
-      <span class="text-xs font-medium text-text-primary"> Data de hoje </span>
+      <span class="text-xs font-medium text-text-primary">
+        {{ today | date: "dd 'de' MMMM 'de' yyyy" }}</span
+      >
     </div>
 
     <!-- Reflexões pendentes -->
-    <div class="md:flex md:items-center md:mx-1">
+    <div class="md:flex md:items-center md:mx-auto md:max-w-200">
       @for (reflection of reflections; track reflection.id) {
         @if (!reflection.response) {
-          <form (submit)="onSubmit($event, reflection.id)" class="bg-bg-primary px-1 py-1 mx-auto max-w-100">
+          <form
+            (submit)="onSubmit($event, reflection.id)"
+            class="bg-bg-primary px-1 py-1 mx-auto max-w-100"
+          >
             <!-- Reflexão -->
             <div
               class="m-2 grid min-h-30 py-2 grid-cols-4 rounded-xl bg-bg-reflection pr-3 shadow-xs shadow-bg-button-hover"
@@ -63,7 +69,7 @@
     @if (reflections.every((reflection) => reflection.response)) {
       <div class="bg-bg-primary py-2 mx-auto max-w-100">
         <div
-          class="flex flex-col justify-center items-center p-2 rounded-xl border border-bg-button-hover bg-white "
+          class="flex flex-col justify-center items-center p-2 rounded-xl border border-bg-button-hover bg-white"
         >
           <img
             src="/emptyReflections.jpg"
@@ -77,21 +83,21 @@
         </div>
       </div>
     }
-    
+
     <!-- Histórico -->
     <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold mx-auto max-w-100">Histórico</h2>
+
     <!-- Reflexões respondidas -->
     @if (reflections.some((reflection) => reflection.response)) {
       @for (reflection of reflections; track reflection.id) {
         @if (reflection.response) {
           @if (editingReflectionId === reflection.id) {
-
             <!-- Card em modo de edição -->
             <div class="bg-bg-primary mx-auto max-w-100">
-              <div class=" px-3 pb-3 ">
+              <div class="px-3 pb-3">
                 <form
                   (submit)="onUpdate($event, reflection.id)"
-                  class="flex flex-col gap-2 rounded-lg border border-bg-button-hover bg-white p-3 "
+                  class="flex flex-col gap-2 rounded-lg border border-bg-button-hover bg-white p-3"
                 >
                   <!-- Reflexão -->
                   <p class="text-sm font-semibold">
@@ -124,9 +130,8 @@
               </div>
             </div>
           } @else {
-
             <!-- Card da reflexão respondida -->
-            <div class="bg-bg-primary px-3 pb-3 ">
+            <div class="bg-bg-primary px-3 pb-3">
               <div
                 class="grid grid-cols-5 items-center rounded-lg border border-bg-button-hover bg-white p-3 mx-auto max-w-100"
               >
