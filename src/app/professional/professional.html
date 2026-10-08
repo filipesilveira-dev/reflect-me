@@ -2,16 +2,24 @@
   <h1>Hello, {{ professional.username }}!</h1>
 
   <div>
-    <p>Reflexões totais: {{totalReflections}}</p>
+    <p>Reflexões totais: {{ totalReflections }}</p>
   </div>
   <div>
-    <p>Reflexões pendentes: {{pendingReflections}}</p>
+    <p>Reflexões pendentes: {{ pendingReflections }}</p>
   </div>
   <div>
-    <p>Reflexões respondidas: {{answeredReflections}}</p>
+    <p>Reflexões respondidas: {{ answeredReflections }}</p>
   </div>
-  @for (reflection of reflections; track reflection.id){
-    <p>{{reflection.text}}{{reflection.userId}}</p>
+
+  <section>
+    @for (reflection of reflections; track reflection.id) {
+      <p>{{ reflection.text }}{{ reflection.userId }}</p>
+    }
+  </section>
+
+  @for (user of users; track user.id) {
+    <!-- Indica a rota que será utilizada ao clicar no componente. No caso, a rota utilizará o id do profissiona e o id do usuário como elementos que variam. Cada parágrafo será renderizado contendo em sua rota o valor condizente -->
+    <p [routerLink]="['/professional', professional.id, 'user', user.id]" class="hover:cursor-pointer">{{ user.username }}</p>
   }
 } @else {
   <h1>Profissional não encontrado</h1>

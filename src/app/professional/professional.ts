@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
 import { Professional, User } from '../models/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { users } from '../data/users';
 import { Reflection } from '../models/reflection';
 import { ReflectionService } from '../services/reflection.service';
 
 @Component({
   selector: 'app-professional',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './professional.html',
   styleUrl: './professional.css',
 })
 export class ProfessionalPage {
-  // Propriedade de 'UserPage' que pode conter um usuário ou 'undefined', caso não seja achado o usuário na lista
   professional: Professional | undefined;
   reflections: Reflection[] = [];
   users: User[] = [];

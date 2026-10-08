@@ -2,6 +2,7 @@
 export interface User {
   id: string;
   username: string;
+  name: string;
   password: string;
   role: 'user';
   professionalId: string;
@@ -10,6 +11,7 @@ export interface User {
 export interface Professional {
   id: string;
   username: string;
+  name: string;
   password: string;
   role: 'professional';
 }
