@@ -13,7 +13,7 @@
       <span
         class="mx-1 rounded-full border border-bg-button-primary bg-bg-reflection px-2 py-1 text-xs"
       >
-        U
+        {{ user.name.charAt(0).toUpperCase() }}
       </span>
     </header>
 
@@ -104,7 +104,7 @@
                   <p class="text-sm font-semibold">
                     {{ reflection.text }}
                   </p>
-                  
+
                   <!-- Resposta em modo de edição -->
                   <textarea
                     name="editedResponse"

@@ -29,6 +29,7 @@
     --color-response-text: #7F7F7F;
     --color-pendingReflections-text: #6B5FC7;
     --color-bg-patient-text: #EDE9FE;
+    --color-bg-answeredResponse-text: #E3F1EC;
 }
 
 html, body {

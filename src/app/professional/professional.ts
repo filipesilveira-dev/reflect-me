@@ -18,6 +18,24 @@ export class ProfessionalPage {
   totalReflections = 0;
   pendingReflections = 0;
   answeredReflections = 0;
+  selectedFilter: 'all' | 'answered' | 'pending' = 'all';
+
+  get filteredReflections(): Reflection[] {
+  switch (this.selectedFilter) {
+    case 'answered':
+      return this.reflections.filter(
+        (reflection) => reflection.response !== '',
+      );
+
+    case 'pending':
+      return this.reflections.filter(
+        (reflection) => reflection.response === '',
+      );
+
+    default:
+      return this.reflections;
+  }
+}
 
   // Possibilita  identificar parâmetros da rota (semelhante ao que é feito em React com useParams(). Isso permitirá, com base no id passado na rota, identificar qual usuário está acessando a aplicação)
   constructor(
@@ -61,5 +79,7 @@ export class ProfessionalPage {
     this.answeredReflections = this.reflections.filter(
       (reflection) => reflection.response !== '',
     ).length;
+
+    
   }
 }

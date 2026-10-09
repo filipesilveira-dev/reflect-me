@@ -6,14 +6,14 @@ export const users: (Professional | User)[] = [
   {
     id: '1',
     username: 'admin1',
-    name: 'Dra. Ana Beatriz',
+    name: 'Ana Beatriz',
     password: '123',
     role: 'professional',
   },
   {
     id: '2',
     username: 'admin2',
-    name: 'Dr. Rafael Martins',
+    name: 'Rafael Martins',
     password: '123',
     role: 'professional',
   },

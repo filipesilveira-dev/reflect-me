@@ -12,13 +12,13 @@
     <span
       class="mx-1 rounded-full border border-bg-button-primary bg-bg-reflection px-2 py-1 text-xs"
     >
-      P
+      {{ professional.name.charAt(0).toUpperCase() }}
     </span>
   </header>
 
   <!-- Introdução -->
   <div class="flex flex-col bg-bg-primary px-3 py-2 mx-auto max-w-100">
-    <h1 class="text-lg font-semibold">Olá, {{ professional.name }}!</h1>
+    <h1 class="text-lg font-semibold">Olá, Dr(a). {{ professional.name }}!</h1>
     <p class="text-xs font-medium text-text-primary">
       Acompanhe a jornada de reflexões dos seus usuários
     </p>
@@ -50,7 +50,7 @@
 
   <!-- Lista de usuários -->
   <section class="flex flex-col justify-center m-3 gap-3">
-    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold  max-w-100">Pacientes</h2>
+    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold max-w-100">Pacientes</h2>
     @for (user of users; track user.id) {
       <!-- Indica a rota que será utilizada ao clicar no componente. No caso, a rota utilizará o id do profissiona e o id do usuário como elementos que variam. Cada parágrafo será renderizado contendo em sua rota o valor condizente -->
 
@@ -59,8 +59,9 @@
         [routerLink]="['/professional', professional.id, 'user', user.id]"
         class="flex gap-2 p-2 items-center shadow-xs border border-border-bottom rounded-xl bg-white hover:cursor-pointer hover:translate-x-1 transition-transform duration-200"
       >
+        <!-- Primeira letra do nome do paciente -->
         <span
-          class="flex h-8 w-8 hrink-0 items-center justify-center rounded-full bg-bg-patient-text font-semibold text-pendingReflections-text "
+          class="flex h-8 w-8 hrink-0 items-center justify-center rounded-full bg-bg-patient-text font-semibold text-pendingReflections-text"
         >
           {{ user.name.charAt(0).toUpperCase() }}
         </span>
@@ -88,17 +89,90 @@
               </p>
             </div>
           </div>
-          <img src="/arrow.svg" alt="Imagem de seta para a direita" class="h-5 w-5">
+          <img src="/arrow.svg" alt="Imagem de seta para a direita" class="h-5 w-5" />
         </div>
-
       </div>
     }
   </section>
 
-  <!-- Lista de reflexões totais -->
-  <section>
-    @for (reflection of reflections; track reflection.id) {
-      <p>{{ reflection.text }}</p>
+  <!-- Histórico de reflexões -->
+  <section class="flex flex-col justify-center m-3 gap-3">
+    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold max-w-100">Histórico de reflexões</h2>
+
+    <!-- Botões de filtro -->
+    <div class="flex gap-2">
+      <button
+        type="button"
+        (click)="selectedFilter = 'all'"
+        [class.border-2]="selectedFilter === 'all'"
+        [class.border-black]="selectedFilter === 'all'"
+        [class.font-semibold]="selectedFilter === 'all'"
+        class="flex-1 rounded-lg bg-white border border-border-bottom px-3 py-2 text-sm hover:cursor-pointer hover:border-2 hover:font-semibold"
+      >
+        Todas
+      </button>
+
+      <button
+        type="button"
+        (click)="selectedFilter = 'answered'"
+        [class.border-2]="selectedFilter === 'answered'"
+        [class.border-black]="selectedFilter === 'answered'"
+        [class.font-semibold]="selectedFilter === 'answered'"
+        class="flex-1 rounded-lg bg-white border border-border-bottom px-3 py-2 text-sm hover:cursor-pointer hover:border-2 hover:font-semibold"
+      >
+        Respondidas
+      </button>
+
+      <button
+        type="button"
+        (click)="selectedFilter = 'pending'"
+        [class.border-2]="selectedFilter === 'pending'"
+        [class.border-black]="selectedFilter === 'pending'"
+        [class.font-semibold]="selectedFilter === 'pending'"
+        class="flex-1 rounded-lg bg-white border border-border-bottom px-3 py-2 text-sm hover:cursor-pointer hover:border-2 hover:font-semibold"
+      >
+        Pendentes
+      </button>
+    </div>
+
+    <!-- Lista filtrada -->
+    @for (reflection of filteredReflections; track reflection.id) {
+      <!-- Card de reflexão -->
+      <div
+        class="flex flex-col gap-2 shadow-xs border border-border-bottom rounded-xl bg-white p-2"
+      >
+        <h3 class="font-medium">{{ reflection.text }}</h3>
+
+        <div class="flex flex-row w-full justify-between">
+          <div class="flex flex-row items-center gap-1">
+            @for (user of users; track user.id) {
+              @if (user.id === reflection.userId) {
+                <span class="text-xs font-medium">{{ user.name }}</span>
+              }
+            }
+
+            <span class="text-xs font-medium"> | {{ reflection.createdAt }} </span>
+          </div>
+
+          @if (reflection.response === '') {
+            <span
+              class="text-xs rounded-full bg-bg-patient-text font-semibold text-pendingReflections-text p-1"
+            >
+              Aguardando resposta
+            </span>
+          } @else {
+            <span
+              class="text-xs rounded-full bg-bg-answeredResponse-text font-semibold text-text-primary p-1"
+            >
+              Respondida
+            </span>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="py-4 text-center text-sm text-text-primary">
+        Nenhuma reflexão encontrada para este filtro.
+      </p>
     }
   </section>
 
