@@ -1,26 +1,110 @@
 @if (professional) {
-  <h1>Hello, {{ professional.username }}!</h1>
+  <!-- Cabeçalho -->
+  <header
+    class="flex items-center justify-between w-full px-2 py-1 bg-white border-b border-border-bottom"
+  >
+    <div class="flex items-center rounded-md">
+      <img src="/reflectMeLogoTrans.png" alt="Logo Reflect Me" class="h-10 w-10 p-1" />
 
-  <div>
-    <p>Reflexões totais: {{ totalReflections }}</p>
-  </div>
-  <div>
-    <p>Reflexões pendentes: {{ pendingReflections }}</p>
-  </div>
-  <div>
-    <p>Reflexões respondidas: {{ answeredReflections }}</p>
+      <span class="font-semibold">Reflect Me</span>
+    </div>
+
+    <span
+      class="mx-1 rounded-full border border-bg-button-primary bg-bg-reflection px-2 py-1 text-xs"
+    >
+      P
+    </span>
+  </header>
+
+  <!-- Introdução -->
+  <div class="flex flex-col bg-bg-primary px-3 py-2 mx-auto max-w-100">
+    <h1 class="text-lg font-semibold">Olá, {{ professional.name }}!</h1>
+    <p class="text-xs font-medium text-text-primary">
+      Acompanhe a jornada de reflexões dos seus usuários
+    </p>
   </div>
 
-  <section>
-    @for (reflection of reflections; track reflection.id) {
-      <p>{{ reflection.text }}{{ reflection.userId }}</p>
+  <!-- Dashboard reflexões -->
+  <section class="flex justify-center gap-4 items-center mx-3 my-1">
+    <div
+      class="flex flex-col justify-center items-center gap-2 text-xs p-3 text-text-primary bg-white rounded-xl shadow-xs border border-border-bottom"
+    >
+      <p class="font-medium text-sm text-center text-response-text">Reflexões totais:</p>
+      <span class="font-bold text-2xl">{{ totalReflections }}</span>
+    </div>
+
+    <div
+      class="flex flex-col justify-center items-center gap-2 text-xs font-medium p-3 text-text-primary bg-white rounded-xl shadow-xs border border-border-bottom"
+    >
+      <p class="font-medium text-sm text-center text-response-text">Reflexões pendentes:</p>
+      <span class="font-bold text-2xl text-pendingReflections-text">{{ pendingReflections }}</span>
+    </div>
+
+    <div
+      class="flex flex-col justify-center items-center gap-2 text-xs font-medium p-3 text-text-primary bg-white rounded-xl shadow-xs border border-border-bottom"
+    >
+      <p class="font-medium text-sm text-center text-response-text">Reflexões respondidas:</p>
+      <span class="font-bold text-2xl">{{ answeredReflections }}</span>
+    </div>
+  </section>
+
+  <!-- Lista de usuários -->
+  <section class="flex flex-col justify-center m-3 gap-3">
+    <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold  max-w-100">Pacientes</h2>
+    @for (user of users; track user.id) {
+      <!-- Indica a rota que será utilizada ao clicar no componente. No caso, a rota utilizará o id do profissiona e o id do usuário como elementos que variam. Cada parágrafo será renderizado contendo em sua rota o valor condizente -->
+
+      <!-- Card dos pacientes -->
+      <div
+        [routerLink]="['/professional', professional.id, 'user', user.id]"
+        class="flex gap-2 p-2 items-center shadow-xs border border-border-bottom rounded-xl bg-white hover:cursor-pointer hover:translate-x-1 transition-transform duration-200"
+      >
+        <span
+          class="flex h-8 w-8 hrink-0 items-center justify-center rounded-full bg-bg-patient-text font-semibold text-pendingReflections-text "
+        >
+          {{ user.name.charAt(0).toUpperCase() }}
+        </span>
+
+        <!-- Container texto do card + imagem de seta -->
+        <div class="flex w-full justify-between items-center">
+          <div class="flex flex-col">
+            <h3>
+              {{ user.name }}
+            </h3>
+            <div class="flex gap-1">
+              <p class="text-xs font-medium text-text-primary">
+                Total de reflexões:
+                <span>{{
+                  reflections.filter((reflection) => reflection.userId === user.id).length
+                }}</span>
+              </p>
+              <p class="text-xs font-medium text-text-primary">
+                | Pendentes:
+                <span>{{
+                  reflections.filter(
+                    (reflection) => reflection.userId === user.id && reflection.response === ''
+                  ).length
+                }}</span>
+              </p>
+            </div>
+          </div>
+          <img src="/arrow.svg" alt="Imagem de seta para a direita" class="h-5 w-5">
+        </div>
+
+      </div>
     }
   </section>
 
-  @for (user of users; track user.id) {
-    <!-- Indica a rota que será utilizada ao clicar no componente. No caso, a rota utilizará o id do profissiona e o id do usuário como elementos que variam. Cada parágrafo será renderizado contendo em sua rota o valor condizente -->
-    <p [routerLink]="['/professional', professional.id, 'user', user.id]" class="hover:cursor-pointer">{{ user.username }}</p>
-  }
+  <!-- Lista de reflexões totais -->
+  <section>
+    @for (reflection of reflections; track reflection.id) {
+      <p>{{ reflection.text }}</p>
+    }
+  </section>
+
+  <!-- Lista de reflexões respondidas -->
+
+  <!-- Lista de reflexões pendentes -->
 } @else {
   <h1>Profissional não encontrado</h1>
 }

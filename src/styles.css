@@ -27,6 +27,8 @@
     --color-bg-landscape: #d1c8ea4b;
     --color-bg-delete-hover: rgba(255, 0, 0, 0.521);
     --color-response-text: #7F7F7F;
+    --color-pendingReflections-text: #6B5FC7;
+    --color-bg-patient-text: #EDE9FE;
 }
 
 html, body {
