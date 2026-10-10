@@ -37,7 +37,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '6',
-    username: 'user4',
+    username: 'user3',
     name: 'Beatriz Costa',
     password: '123',
     role: 'user',
@@ -45,7 +45,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '7',
-    username: 'user5',
+    username: 'user4',
     name: 'Gabriel Souza',
     password: '123',
     role: 'user',
@@ -53,7 +53,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '8',
-    username: 'Camila Ferreira',
+    username: 'user5',
     password: '123',
     name: 'Camila Ferreira',
     role: 'user',
@@ -63,7 +63,7 @@ export const users: (Professional | User)[] = [
   // Clientes do profissional 2
   {
     id: '5',
-    username: 'user3',
+    username: 'user6',
     name: 'Pedro Henrique',
     password: '123',
     role: 'user',
@@ -71,7 +71,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '9',
-    username: 'user6',
+    username: 'user7',
     name: 'Juliana Rocha',
     password: '123',
     role: 'user',
@@ -79,7 +79,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '10',
-    username: 'user7',
+    username: 'user8',
     name: 'André Carvalho',
     password: '123',
     role: 'user',
@@ -87,7 +87,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '11',
-    username: 'user8',
+    username: 'user9',
     name: 'Larissa Mendes',
     password: '123',
     role: 'user',
@@ -95,7 +95,7 @@ export const users: (Professional | User)[] = [
   },
   {
     id: '12',
-    username: 'user9',
+    username: 'user10',
     name: 'Felipe Nascimento',
     password: '123',
     role: 'user',

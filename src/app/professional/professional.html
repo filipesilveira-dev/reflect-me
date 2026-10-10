@@ -16,14 +16,16 @@
     </span>
   </header>
 
-  <div class="md:flex items-center justify-around mb-1">
-
+  <div class="md:flex items-center justify-between mb-1 ml-1">
     <!-- Introdução -->
     <div class="flex flex-col bg-bg-primary px-3 py-2 mx-auto max-w-100 md:m-0">
       <h1 class="text-lg font-semibold md:text-2xl">Olá, Dr(a). {{ professional.name }}!</h1>
       <p class="text-xs font-medium text-text-primary md:text-sm">
         Acompanhe a jornada de reflexões dos seus usuários
       </p>
+      <span class="text-xs font-medium text-text-primary">
+        {{ today | date: "dd 'de' MMMM 'de' yyyy" }}</span
+      >
     </div>
 
     <!-- Dashboard reflexões -->
@@ -38,7 +40,9 @@
         class="flex flex-col justify-center items-center gap-2 text-xs font-medium p-3 text-text-primary bg-white rounded-xl shadow-xs border border-border-bottom"
       >
         <p class="font-medium text-sm text-center text-response-text">Reflexões pendentes:</p>
-        <span class="font-bold text-2xl text-pendingReflections-text">{{ pendingReflections }}</span>
+        <span class="font-bold text-2xl text-pendingReflections-text">{{
+          pendingReflections
+        }}</span>
       </div>
       <div
         class="flex flex-col justify-center items-center gap-2 text-xs font-medium p-3 text-text-primary bg-white rounded-xl shadow-xs border border-border-bottom"
@@ -47,7 +51,6 @@
         <span class="font-bold text-2xl">{{ answeredReflections }}</span>
       </div>
     </section>
-
   </div>
 
   <!-- Container para telas "md" -->
@@ -99,7 +102,9 @@
 
     <!-- Histórico de reflexões -->
     <section class="flex flex-col justify-center m-3 gap-3">
-      <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold max-w-100 md:text-2xl">Histórico de reflexões</h2>
+      <h2 class="bg-bg-primary px-3 py-2 text-lg font-semibold max-w-100 md:text-2xl">
+        Histórico de reflexões
+      </h2>
       <!-- Botões de filtro -->
       <div class="flex gap-2">
         <button
@@ -172,7 +177,6 @@
       }
     </section>
   </div>
-
 } @else {
   <h1>Profissional não encontrado</h1>
 }
