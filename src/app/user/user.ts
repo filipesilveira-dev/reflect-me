@@ -11,10 +11,11 @@ import { Reflection } from '../models/reflection';
 import { FormsModule } from '@angular/forms';
 // Arquivo que fornece informações por meio de Injeção de Dependências (DI)
 import { ReflectionService } from '../services/reflection.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, RouterLink],
   templateUrl: './user.html',
   styleUrl: './user.css',
 })
