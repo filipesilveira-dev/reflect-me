@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Professional } from './professional';
+import { ProfessionalPage } from './professional';
 
 describe('Professional', () => {
-  let component: Professional;
-  let fixture: ComponentFixture<Professional>;
+  let component: ProfessionalPage;
+  let fixture: ComponentFixture<ProfessionalPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Professional],
+      imports: [ProfessionalPage],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Professional);
+    fixture = TestBed.createComponent(ProfessionalPage);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
