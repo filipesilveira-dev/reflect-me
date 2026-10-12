@@ -1,0 +1,117 @@
+
+# Nome do workflow
+name: Pipeline CI/CD em GitHub Pages
+
+# Eventos que disparam o workflow
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "public/**"
+      - ".github/workflows/**"
+      - "angular.json"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig*.json"
+      - "postcss.config.json"
+
+  # Permite execução manual pela interface do GitHub
+  workflow_dispatch:
+
+# Permissões do GITHUB_TOKEN
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Job 1: build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Baixa o código do repositório
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Configura o Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # Mantém a versão do npm utilizada no desenvolvimento
+      - name: Setup npm
+        run: npm install -g npm@11.6.2
+
+      # Confere as versões instaladas
+      - name: Check Node and npm versions
+        run: |
+          node -v
+          npm -v
+
+      # Instala as dependências de forma reproduzível
+      - name: Install dependencies
+        run: npm ci
+
+      # Compila o Angular para o GitHub Pages
+      - name: Build
+        run: npm run build -- --base-href=/reflect-me/
+
+      # Prepara os arquivos do GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      # Prepara o fallback para as rotas da aplicação
+      - name: Prepare SPA fallback
+        run: cp dist/reflect-me/browser/index.html dist/reflect-me/browser/404.html
+
+      # Envia os arquivos compilados para publicação
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist/reflect-me/browser
+
+  # Job 2: testes automatizados
+  tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup npm
+        run: npm install -g npm@11.6.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test -- --watch=false
+
+  # Job 3: publicação
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    needs:
+      - build
+      - tests
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
