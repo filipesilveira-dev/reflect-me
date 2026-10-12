@@ -67,4 +67,48 @@ export class ReflectionService {
 
     localStorage.setItem(this.storageKey, JSON.stringify(reflections));
   }
+
+  // Método que adiciona um reflexão
+  addReflection(reflection: Reflection): void {
+    const reflections = this.getReflections();
+
+    const updatedReflections = [...reflections, reflection];
+
+    localStorage.setItem('reflect-me-reflections', JSON.stringify(updatedReflections));
+  }
+
+  // Método para atualizar uma reflexão após criada e ainda pendente
+  updateReflectionText(id: string, text: string): boolean {
+    const reflections = this.getReflections();
+
+    const reflection = reflections.find((item) => item.id === id);
+
+    if (!reflection || reflection.response !== '') {
+      return false;
+    }
+
+    const updatedReflections = reflections.map((item) =>
+      item.id === id ? { ...item, text } : item,
+    );
+
+    localStorage.setItem(this.storageKey, JSON.stringify(updatedReflections));
+
+    return true;
+  }
+
+  // Método para deletar uma reflexão criada que ainda não foi respondida
+  deleteReflection(id: string): boolean {
+    const reflections = this.getReflections();
+    const reflection = reflections.find((item) => item.id === id);
+
+    if (!reflection || reflection.response !== '') {
+      return false;
+    }
+
+    const updatedReflections = reflections.filter((item) => item.id !== id);
+
+    localStorage.setItem(this.storageKey, JSON.stringify(updatedReflections));
+
+    return true;
+  }
 }
